@@ -13,17 +13,34 @@ public class Main {
 
         GraphicsPolygon graphicsPolygon = new GraphicsPolygon(argumentWords);
         graphicsPolygon.setVisible(true);
-        graphicsPolygon.setLayout(new FlowLayout());
 
-        TextField textField = new TextField("Dare Mighty Things                               ");
+
+        BorderLayout topLayout = new BorderLayout();
+        graphicsPolygon.setLayout(topLayout);
+
+        TextField textField = new TextField("Dare Mighty Things");
         textField.setSize(500,30);
-        graphicsPolygon.add(textField);
+        graphicsPolygon.add(textField,BorderLayout.NORTH);
         Button generate = new Button("Generate");
+
+        java.awt.List charcestList = Helper.prepareList(Arrays.stream(sentence[0].split(" ")).toList());
+        charcestList.setPreferredSize(new Dimension(500,500));
+        graphicsPolygon.add(charcestList,BorderLayout.WEST);
+
         generate.addActionListener(e -> {
             sentence[0] = textField.getText();
             graphicsPolygon.setWords(Arrays.stream(sentence[0].split(" ")).toList());
+            charcestList.removeAll();
+            java.awt.List newList = Helper.prepareList(Arrays.stream(sentence[0].split(" ")).toList());
+            for (String item : newList.getItems()){
+                charcestList.add(item);
+            }
+            charcestList.notify();
+            charcestList.repaint();
         });
-        graphicsPolygon.add(generate);
+        graphicsPolygon.add(generate,BorderLayout.EAST);
+
+
         graphicsPolygon.setSize(Toolkit.getDefaultToolkit().getScreenSize().width,Toolkit.getDefaultToolkit().getScreenSize().height);
 
     }
